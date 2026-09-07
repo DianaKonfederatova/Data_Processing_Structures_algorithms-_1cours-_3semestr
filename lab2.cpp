@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cstdlib>
-#include <string>
+#include <algorithm>
 
 struct vertex {
 
@@ -106,6 +106,17 @@ int size_tree(vertex* node){
 
 }
 
+int height(vertex* node){
+
+    if (node == nullptr){
+        return 0;
+    }else{
+        int h = 1 + std::max(height(node -> left), height(node ->right));
+        return h;
+    }
+
+}
+
 int control_sum(vertex* node){
 
     if (node == nullptr){
@@ -155,6 +166,10 @@ int main(){
 
     std::cout << "Контрольная сумма дерева: ";
     std::cout << control_sum(root);
+    std::cout << "\n";
+
+    std::cout << "Высота дерева: ";
+    std::cout << height(root);
     std::cout << "\n";
 
     clear(root);
