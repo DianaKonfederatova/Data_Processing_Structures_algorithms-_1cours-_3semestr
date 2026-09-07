@@ -141,6 +141,17 @@ int sum_of_path_lengths(vertex* node, int level = 0){
    
 }
 
+float height_middle(int size, int sum_path){
+
+    if (size == 0){
+        return 0.0f;
+    }
+    
+    float h_m = float(sum_path) / size;
+    return h_m;
+
+}
+
 int main(){
     vertex *root = new vertex(1);
     
@@ -173,7 +184,8 @@ int main(){
     std::cout << "\n";
 
     std::cout << "Размер дерева: ";
-    std::cout << size_tree(root);
+    int size = size_tree(root);
+    std::cout << size;
     std::cout << "\n";
 
     std::cout << "Контрольная сумма дерева: ";
@@ -185,8 +197,11 @@ int main(){
     std::cout << "\n";
 
     std::cout << "Сумма длин путей: ";
-    std::cout << sum_of_path_lengths(root);
+    int sum_path = sum_of_path_lengths(root);
+    std::cout << sum_path;
     std::cout << "\n";
+
+    printf("Средняя высота дерева: %.2f\n", height_middle(size, sum_path));
 
     clear(root);
 
