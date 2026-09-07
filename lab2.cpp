@@ -129,6 +129,18 @@ int control_sum(vertex* node){
 
 }
 
+int sum_of_path_lengths(vertex* node, int level = 0){
+
+    if(node == nullptr){
+        return 0;
+    }else{
+        int sum_of_path = level + sum_of_path_lengths(node -> left, level + 1)
+        + sum_of_path_lengths(node -> right, level + 1);
+        return sum_of_path;
+    }
+   
+}
+
 int main(){
     vertex *root = new vertex(1);
     
@@ -170,6 +182,10 @@ int main(){
 
     std::cout << "Высота дерева: ";
     std::cout << height(root);
+    std::cout << "\n";
+
+    std::cout << "Сумма длин путей: ";
+    std::cout << sum_of_path_lengths(root);
     std::cout << "\n";
 
     clear(root);
