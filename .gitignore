@@ -1,8 +1,7 @@
 *.exe
 *.out
 *.app
-lab1
-lab1_exec
+
 
 *.o
 *.obj
