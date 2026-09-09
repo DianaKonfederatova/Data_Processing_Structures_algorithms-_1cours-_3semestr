@@ -3,6 +3,15 @@
 #include <string>
 #include <sstream>
 
+void print_text(std::ifstream& files){
+    std::string line;
+
+    while(std::getline(files, line)){
+        std::cout << line << "\n";
+    }
+
+}
+
 void substring_search(std::ifstream& files, const std::string& searchword){
     std::string line;
     size_t T = searchword.length();
@@ -22,13 +31,15 @@ void substring_search(std::ifstream& files, const std::string& searchword){
             size_t j;
 
             for (j = 0; j < T; j++){
-                if(line[i + j] != searchword[j]){
+                if(std::tolower(line[i + j]) != std::tolower(searchword[j])){
                     break;
                 }
 
             }
 
             if(j == T){
+                std::cout << "Подстрока, в которой найдено слово:\n";
+                std::cout << "\n" <<line << "\n";
                 std::cout << "Слово \"" << searchword << "\" найдено на строке " 
                           << line_number << ", позиция " << i << "\n";
                 found = true;
@@ -66,7 +77,13 @@ int main(){
         return 1;
     }
 
-    substring_search(file2,"made");
+    std::cout << "Текст:\n" << "\n";
+    print_text(file2);
+    std::cout << "\n";
+    file2.clear();
+    file2.seekg(0);
+
+    substring_search(file2,"yeah");
 
     file2.close();    
 }
