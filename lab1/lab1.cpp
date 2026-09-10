@@ -28,7 +28,7 @@ void substring_search(std::ifstream& files, const std::string& searchword){
             continue;
         }  
 
-        for(size_t i = 0; i<= cur_line; i++){
+        for(size_t i = 0; i<= cur_line - T; i++){
             size_t j;
 
             for (j = 0; j < T; j++){
@@ -71,6 +71,59 @@ long long hash_value(const std::string& str){
     return h;
 }
 
+void RabinKarp (std::ifstream& files, const std::string& searchword){
+    std::string line;
+    size_t m = searchword.length();
+    int line_number = 1;
+    bool found = false;
+
+    std::string needle = searchword;
+    for (char &c : needle) c = std::tolower(static_cast<unsigned char>(c));
+    long long hash_needle = hash_value(needle);
+
+    while(std::getline(files, line)){
+        size_t n = line.length();
+
+        if (n < m){
+            line_number++;
+            continue;
+        }
+
+        std::string haystack = line;
+        for (char &c : haystack) c = std::tolower(static_cast<unsigned char>(c));
+        long long hash_haystack = hash_value(haystack.substr(0, m));
+
+        for(size_t i = 0; i <= n - m; i++){
+
+            if(hash_haystack == hash_needle){
+
+                if(haystack.substr(i, m) == needle){
+                    std::cout << "Подстрока, в которой найдено слово:\n";
+                    std::cout << line << "\n" << "\n";
+                    std::cout << "Слово \"" << searchword << "\" найдено методом Рабина-Карпа на строке " 
+                              << line_number << ", позиция " << i << "\n\n";
+                    found = true;
+                }
+
+            }
+
+            if (i < n - m) {
+                hash_haystack = hash_value(haystack.substr(i + 1, m));
+            }
+            
+
+        }
+
+        line_number++;
+
+    }
+
+    if (found == false) {
+        std::cout << "Слово \"" << searchword << "\" не найдено методом Рабина-Карпа.\n";
+    }
+
+}
+
 
 int main(){
     std::ofstream file("file_1.txt");
@@ -105,6 +158,11 @@ int main(){
 
     file2.clear();
     file2.seekg(0);
+
+    std::cout << "\n";
+
+    std::cout << "\n\nМЕТОД РАБИНА-КАРПА\n\n";
+    RabinKarp(file2, "yeah");
 
     file2.close();    
 }
