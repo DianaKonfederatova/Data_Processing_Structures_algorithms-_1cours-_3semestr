@@ -13,7 +13,7 @@ void print_text(std::ifstream& files){
 
 }
 
-void substring_search(std::ifstream& files, const std::string& searchword){
+void substring_search(std::ifstream& files, const std::string& searchword, long long& n_comp){
     std::string line;
     size_t T = searchword.length();
     int line_number = 1;
@@ -32,6 +32,7 @@ void substring_search(std::ifstream& files, const std::string& searchword){
             size_t j;
 
             for (j = 0; j < T; j++){
+                n_comp++; 
                 if(std::tolower(line[i + j]) != std::tolower(searchword[j])){
                     break;
                 }
@@ -71,7 +72,7 @@ long long hash_value(const std::string& str){
     return h;
 }
 
-void RabinKarp (std::ifstream& files, const std::string& searchword){
+void RabinKarp (std::ifstream& files, const std::string& searchword, long long& n_comp){
     std::string line;
     size_t m = searchword.length();
     int line_number = 1;
@@ -97,13 +98,23 @@ void RabinKarp (std::ifstream& files, const std::string& searchword){
 
             if(hash_haystack == hash_needle){
 
-                if(haystack.substr(i, m) == needle){
+                bool match = true;
+                for (size_t j = 0; j < m; j++) {
+                    n_comp++; 
+                    if (haystack[i + j] != needle[j]) {
+                        match = false;
+                        break;
+                    }
+                }
+
+                if(match){
                     std::cout << "Подстрока, в которой найдено слово:\n";
                     std::cout << line << "\n" << "\n";
                     std::cout << "Слово \"" << searchword << "\" найдено методом Рабина-Карпа на строке " 
-                              << line_number << ", позиция " << i << "\n\n";
+                              << line_number << ", позиция " << i << "\n";
                     found = true;
                 }
+
 
             }
 
@@ -152,9 +163,12 @@ int main(){
     file2.clear();
     file2.seekg(0);
 
+    long long ss_comp = 0;
+    long long rk_comp = 0;
+
     std::cout << "МЕТОД ПРЯМОГО ПОИСКА\n" << "\n";
 
-    substring_search(file2,"yeah");
+    substring_search(file2,"yeah",ss_comp);
 
     file2.clear();
     file2.seekg(0);
@@ -162,7 +176,10 @@ int main(){
     std::cout << "\n";
 
     std::cout << "\n\nМЕТОД РАБИНА-КАРПА\n\n";
-    RabinKarp(file2, "yeah");
+    RabinKarp(file2, "yeah", rk_comp);
 
+    std::cout << "\n\nКОЛИЧЕСТВО СРАВНЕНИЙ ДВУХ МЕТОДОВ\n\n";
+    std::cout << "Количество сравнений прямого поиска: " << ss_comp << "\n";
+    std::cout << "Количество сравнений методом Рабина-Карпа: " << rk_comp << "\n";
     file2.close();    
 }
