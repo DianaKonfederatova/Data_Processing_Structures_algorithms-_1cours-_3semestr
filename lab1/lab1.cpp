@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <cctype>
 
 void print_text(std::ifstream& files){
     std::string line;
@@ -39,7 +40,7 @@ void substring_search(std::ifstream& files, const std::string& searchword){
 
             if(j == T){
                 std::cout << "Подстрока, в которой найдено слово:\n";
-                std::cout << "\n" <<line << "\n";
+                std::cout <<line << "\n" << "\n";
                 std::cout << "Слово \"" << searchword << "\" найдено на строке " 
                           << line_number << ", позиция " << i << "\n";
                 found = true;
@@ -55,6 +56,21 @@ void substring_search(std::ifstream& files, const std::string& searchword){
         std::cout << "Слово \"" << searchword << "\" не найдено в файле.\n";
     }
 };
+
+long long hash_value(const std::string& str){
+    size_t cur_line = str.length();
+    long long h = 0;
+    long long q = 1000000007;
+
+    for (size_t i = 0; i < cur_line; i++){
+
+        unsigned char S = static_cast<unsigned char>(str[i]);
+        h = ((h * 256) + S) % q;
+    }
+
+    return h;
+}
+
 
 int main(){
     std::ofstream file("file_1.txt");
@@ -83,7 +99,12 @@ int main(){
     file2.clear();
     file2.seekg(0);
 
+    std::cout << "МЕТОД ПРЯМОГО ПОИСКА\n" << "\n";
+
     substring_search(file2,"yeah");
+
+    file2.clear();
+    file2.seekg(0);
 
     file2.close();    
 }
